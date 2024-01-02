@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>Document</title>
+
+</head>
+<style>
+    table {
+        border-collapse: collapse;
+        /* Remove borders between table cells */
+    }
+
+    table,
+    tr {
+        border: none;
+        /* Remove borders from table, table header, and table data cells */
+    }
+
+    input {
+        border: none;
+        /* Remove borders from input fields */
+    }
+</style>
+
+<body>
+    <table id="myTable" border="none">
+        <tr>
+          <th>Roll No</th>
+          <th>Name</th>
+          <th>Address</th>
+        </tr>
+      </table>
+    
+      <button id="addRowColumnBtn">Add Row and Column</button>
+    
+      <script>
+        function addRowAndColumn() {
+          var table = document.getElementById("myTable");
+          var newRow = table.insertRow();
+    
+          for (let i = 0; i < table.rows[0].cells.length; i++) {
+            var newCell = newRow.insertCell(i);
+            var input = document.createElement("input");
+            input.type = "text";
+            var storedData = localStorage.getItem(`cell_${newRow.rowIndex}_${i}`);
+            
+            if (storedData) {
+              input.value = storedData;
+            }
+    
+            input.addEventListener("input", function () {
+              localStorage.setItem(`cell_${newRow.rowIndex}_${i}`, input.value);
+            });
+    
+            newCell.appendChild(input);
+          }
+        }
+    
+        function loadDataFromLocalStorage() {
+          var table = document.getElementById("myTable");
+    
+          for (var i = 0; i < table.rows.length; i++) {
+            for (var j = 0; j < table.rows[i].cells.length; j++) {
+              var input = table.rows[i].cells[j].querySelector("input");
+              var storedData = localStorage.getItem(`cell_${i}_${j}`);
+              
+              if (storedData) {
+                input.value = storedData;
+              }
+            }
+          }
+        }
+    
+        // Attach the function to the button click event
+        document.getElementById("addRowColumnBtn").addEventListener("click", addRowAndColumn);
+    
+        // Call the function to load data from local storage on page load
+        loadDataFromLocalStorage();
+        // localStorage.clear();
+        // Assuming you want to remove an item with key 'exampleKey'
+// localStorage.removeItem('exampleKey');
+// function removeDataFromLocalStorage(rowIndex, columnIndex) {
+//   localStorage.removeItem(`cell_${rowIndex}_${columnIndex}`);
+// }
+// // Example: Remove data from cell at row 1, column 2
+// removeDataFromLocalStorage(1, 2);
+// localStorage.clear();
+
+      </script>
+</body>
+
+</html>
